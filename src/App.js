@@ -25,6 +25,17 @@ function App() {
 	const inputItemRef = useRef();
 
 	useEffect(() => {
+		if (todo.length > 0) {
+			localStorage.setItem("todos", JSON.stringify(todo));
+		}
+	}, [todo]);
+
+	useEffect(() => {
+		const storedTodo = JSON.parse(localStorage.getItem("todos"));
+		if (storedTodo) setTodo(storedTodo);
+	}, []);
+
+	useEffect(() => {
 		if (status === "all") setFilteredTodo(todo);
 		else {
 			const tempTodo = todo.filter(
