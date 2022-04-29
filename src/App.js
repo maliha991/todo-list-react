@@ -1,4 +1,5 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { v4 as uuid } from "uuid";
 import {
 	Box,
 	Flex,
@@ -12,13 +13,27 @@ import { GoPlus } from "react-icons/go";
 import { ImCross } from "react-icons/im";
 
 import Item from "./component/Item";
+import Filter from "./component/Filter.jsx";
 
 function App() {
 	const [inputItem, setInputItem] = useState("");
 	const [todo, setTodo] = useState([]);
 	const [editingIndex, setEditingIndex] = useState(null);
+	const [status, setStatus] = useState("all");
+	const [filteredTodo, setFilteredTodo] = useState(todo);
 
 	const inputItemRef = useRef();
+
+	useEffect(() => {
+		if (status === "all") setFilteredTodo(todo);
+		else {
+			const tempTodo = todo.filter(
+				({ done }) =>
+					(status === "complete" && done) || (status === "incomplete" && !done)
+			);
+			setFilteredTodo(tempTodo);
+		}
+	}, [status, todo]);
 
 	const cancelEditingHandler = () => {
 		setInputItem("");
@@ -39,18 +54,18 @@ function App() {
 		setInputItem("");
 	};
 
-	const changeStatusHandler = (targetIndex) => {
-		const tempTodo = todo.reduce((result, item, index) => {
-			if (index === targetIndex) item.done = !item.done;
+	const changeStatusHandler = (targetItem) => {
+		const tempTodo = todo.reduce((result, item) => {
+			if (item.item === targetItem) item.done = !item.done;
 			return [...result, item];
 		}, []);
 		setTodo(tempTodo);
 	};
 
-	const editItemHandler = (item, index) => {
+	const editItemHandler = (item) => {
 		setInputItem(item);
 		inputItemRef.current.focus();
-		setEditingIndex(index);
+		setEditingIndex(todo.findIndex((currentItem) => currentItem.item === item));
 	};
 
 	const deleteItemHandler = (item) => {
@@ -59,7 +74,8 @@ function App() {
 	};
 
 	return (
-		<Flex minH="100vh" direction="column" alignItems="center">
+		<Flex pos="relative" minH="100vh" direction="column" alignItems="center">
+			<Filter status={status} setStatus={setStatus} />
 			<Text
 				m={20}
 				fontSize="5xl"
@@ -70,7 +86,7 @@ function App() {
 				To-do List
 			</Text>
 
-			<InputGroup w="20%" size="lg" mb={10}>
+			<InputGroup w="25%" size="lg" mb={10}>
 				<Input
 					borderColor="#918EDC"
 					pr="4.5rem"
@@ -117,16 +133,15 @@ function App() {
 				</InputRightElement>
 			</InputGroup>
 
-			{todo.length > 0 &&
-				todo.map(({ item, done }, index) => (
+			{filteredTodo.length > 0 &&
+				filteredTodo.map(({ item, done }) => (
 					<Item
 						item={item}
-						index={index}
 						done={done}
 						changeStatusHandler={changeStatusHandler}
 						editItemHandler={editItemHandler}
 						deleteItemHandler={deleteItemHandler}
-						key={++index}
+						key={uuid()}
 					/>
 				))}
 		</Flex>

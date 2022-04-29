@@ -6,7 +6,6 @@ import { RiEdit2Fill } from "react-icons/ri";
 
 const Item = ({
 	item,
-	index,
 	done,
 	changeStatusHandler,
 	editItemHandler,
@@ -34,14 +33,14 @@ const Item = ({
 					as={!done ? ImCheckmark : ImCross}
 					color={!done ? "#7928CA" : "#FF0080"}
 					cursor="pointer"
-					onClick={() => changeStatusHandler(index)}
+					onClick={() => changeStatusHandler(item)}
 				/>
 
 				<Box
 					as={RiEdit2Fill}
 					color="#413CAB"
 					cursor="pointer"
-					onClick={() => editItemHandler(item, index)}
+					onClick={() => editItemHandler(item)}
 					fontSize="xl"
 				/>
 
