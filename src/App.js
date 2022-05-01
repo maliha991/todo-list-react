@@ -97,7 +97,7 @@ function App() {
 				To-do List
 			</Text>
 
-			<InputGroup w="25%" size="lg" mb={10}>
+			<InputGroup w={{ base: "25%", md: "40%", xl: "25%" }} size="lg" mb={10}>
 				<Input
 					borderColor="#918EDC"
 					pr="4.5rem"

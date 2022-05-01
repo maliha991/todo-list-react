@@ -11,7 +11,11 @@ const Filter = ({ status, setStatus }) => {
 	};
 
 	return (
-		<HStack pos="absolute" top="30%" left="23%">
+		<HStack
+			pos="absolute"
+			top={{ base: "30%" }}
+			left={{ base: "23%", md: "10%", xl: "23%" }}
+		>
 			<VStack spacing="1.5rem" mr={5}>
 				<Button
 					style={status === "all" ? active : inactive}
