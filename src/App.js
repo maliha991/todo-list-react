@@ -65,22 +65,22 @@ function App() {
 		setInputItem("");
 	};
 
-	const changeStatusHandler = (targetItem) => {
-		const tempTodo = todo.reduce((result, item) => {
-			if (item.item === targetItem) item.done = !item.done;
+	const changeStatusHandler = (targetIndex) => {
+		const tempTodo = todo.reduce((result, item, index) => {
+			if (index === targetIndex) item.done = !item.done;
 			return [...result, item];
 		}, []);
 		setTodo(tempTodo);
 	};
 
-	const editItemHandler = (item) => {
+	const editItemHandler = (item, index) => {
 		setInputItem(item);
 		inputItemRef.current.focus();
-		setEditingIndex(todo.findIndex((currentItem) => currentItem.item === item));
+		setEditingIndex(index);
 	};
 
-	const deleteItemHandler = (item) => {
-		const tempTodo = todo.filter((currentItem) => currentItem.item !== item);
+	const deleteItemHandler = (targetIndex) => {
+		const tempTodo = todo.filter((item, index) => index !== targetIndex);
 		setTodo(tempTodo);
 	};
 
@@ -145,7 +145,7 @@ function App() {
 			</InputGroup>
 
 			{filteredTodo.length > 0 &&
-				filteredTodo.map(({ item, done }) => (
+				filteredTodo.map(({ item, done }, index) => (
 					<Item
 						item={item}
 						done={done}
@@ -153,6 +153,7 @@ function App() {
 						editItemHandler={editItemHandler}
 						deleteItemHandler={deleteItemHandler}
 						key={uuid()}
+						index={index}
 					/>
 				))}
 		</Flex>

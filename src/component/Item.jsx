@@ -10,6 +10,7 @@ const Item = ({
 	changeStatusHandler,
 	editItemHandler,
 	deleteItemHandler,
+	index,
 }) => {
 	return (
 		<Box
@@ -33,14 +34,14 @@ const Item = ({
 					as={!done ? ImCheckmark : ImCross}
 					color={!done ? "#7928CA" : "#FF0080"}
 					cursor="pointer"
-					onClick={() => changeStatusHandler(item)}
+					onClick={() => changeStatusHandler(index)}
 				/>
 
 				<Box
 					as={RiEdit2Fill}
 					color="#413CAB"
 					cursor="pointer"
-					onClick={() => editItemHandler(item)}
+					onClick={() => editItemHandler(item, index)}
 					fontSize="xl"
 				/>
 
@@ -48,7 +49,7 @@ const Item = ({
 					as={AiFillDelete}
 					color="#FF2C2C"
 					cursor="pointer"
-					onClick={() => deleteItemHandler(item)}
+					onClick={() => deleteItemHandler(index)}
 					fontSize="xl"
 				/>
 			</HStack>
